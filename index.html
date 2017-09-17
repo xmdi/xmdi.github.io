@@ -314,8 +314,8 @@
 
 	function writeurl()
 	{
-		var sc1=document.getElementById("scramble").value.replace(/ /g,'_');
-		var so1=document.getElementById("solution").value.replace(/ /g,'_').replace(/\n/g,'\\n');
+		var sc1=document.getElementById("scramble").value.replace(/ /g,'_').replace(/\n/g.' \\n ');
+		var so1=document.getElementById("solution").value.replace(/ /g,'_').replace(/\n/g,' \\n ');
 		document.getElementById("url").innerHTML="xmdi.github.io/index.html?sc="+sc1+"&so="+so1;
 	}
 
