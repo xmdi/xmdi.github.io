@@ -1,5 +1,333 @@
 <html>
-<body bgcolor="black">
-<h1>Welcome my friend!</h1>
+<body style="text-align:center;" bgcolor="black">	
+<div id="cube"></div>
+<script src="three.min.js"></script>
+<script src="TrackballControls.js"></script>
+<script src="mdcube.js"></script>
+<script src="scramble_333_edit.js"></script>
+<script>
+	scramblers['333'].initialize(null, Math); 
+	function scrambler() {
+		return scramblers["333"].getRandomScramble(); //Michael Gottlieb's qqtimer code from Shuang Chen's min2phase solver
+	}
+
+	var camera, controls, scene, renderer, cube;
+	var U1, U2, U3, U4, U5, U6, U7, U8, U9;
+	var R1, R2, R3, R4, R5, R6, R7, R8, R9;
+	var F1, F2, F3, F4, F5, F6, F7, F8, F9;
+	var D1, D2, D3, D4, D5, D6, D7, D8, D9;
+	var L1, L2, L3, L4, L5, L6, L7, L8, L9;
+	var B1, B2, B3, B4, B5, B6, B7, B8, B9;
+	var colors=[0xFFFFFF,0xFF0000,0x32CD32,0xFFFF00,0x0000FF,0xFFA500];
+	U1 = new THREE.Geometry();
+	U2 = new THREE.Geometry();
+	U3 = new THREE.Geometry();
+	U4 = new THREE.Geometry();
+	U5 = new THREE.Geometry();
+	U6 = new THREE.Geometry();
+	U7 = new THREE.Geometry();
+	U8 = new THREE.Geometry();
+	U9 = new THREE.Geometry();
+	R1 = new THREE.Geometry();
+	R2 = new THREE.Geometry();
+	R3 = new THREE.Geometry();
+	R4 = new THREE.Geometry();
+	R5 = new THREE.Geometry();
+	R6 = new THREE.Geometry();
+	R7 = new THREE.Geometry();
+	R8 = new THREE.Geometry();
+	R9 = new THREE.Geometry();
+	F1 = new THREE.Geometry();
+	F2 = new THREE.Geometry();
+	F3 = new THREE.Geometry();
+	F4 = new THREE.Geometry();
+	F5 = new THREE.Geometry();
+	F6 = new THREE.Geometry();
+	F7 = new THREE.Geometry();
+	F8 = new THREE.Geometry();
+	F9 = new THREE.Geometry();
+	D1 = new THREE.Geometry();
+	D2 = new THREE.Geometry();
+	D3 = new THREE.Geometry();
+	D4 = new THREE.Geometry();
+	D5 = new THREE.Geometry();
+	D6 = new THREE.Geometry();
+	D7 = new THREE.Geometry();
+	D8 = new THREE.Geometry();
+	D9 = new THREE.Geometry();
+	L1 = new THREE.Geometry();
+	L2 = new THREE.Geometry();
+	L3 = new THREE.Geometry();
+	L4 = new THREE.Geometry();
+	L5 = new THREE.Geometry();
+	L6 = new THREE.Geometry();
+	L7 = new THREE.Geometry();
+	L8 = new THREE.Geometry();
+	L9 = new THREE.Geometry();
+	B1 = new THREE.Geometry();
+	B2 = new THREE.Geometry();
+	B3 = new THREE.Geometry();
+	B4 = new THREE.Geometry();
+	B5 = new THREE.Geometry();
+	B6 = new THREE.Geometry();
+	B7 = new THREE.Geometry();
+	B8 = new THREE.Geometry();
+	B9 = new THREE.Geometry();
+
+	
+
+	init();
+	animate();
+	render();
+
+	window.onload = function() {
+		let searchParams = new URLSearchParams(window.location.search);
+	
+		for (var pair of searchParams.entries())
+		{
+			if (pair[0]=="sc")
+			{
+				var sc0=searchParams.get('sc').replace(/_/g," ");
+				document.getElementById("scramble").innerHTML=sc0;
+				parsescramble(0);
+			}
+			else if (pair[0]=="so")
+			{
+				var so0=searchParams.get('so').replace(/_/g," ");
+				so0=so0.replace(/\\n/g,"\n");
+				document.getElementById("solution").innerHTML=so0;
+			}
+		}
+	}
+
+	function stickinit(sticker,color,axis,x,y,z)
+	{
+		if (axis==1)
+		{
+			sticker.vertices.push(new THREE.Vector3(-.45, 0, .45)); 
+			sticker.vertices.push(new THREE.Vector3( .45, 0, .45)); 
+			sticker.vertices.push(new THREE.Vector3( .45, 0,-.45)); 
+			sticker.vertices.push(new THREE.Vector3(-.45, 0,-.45)); 
+		}
+		else if (axis==2)
+		{
+			sticker.vertices.push(new THREE.Vector3(0, -.45,  .45)); 
+			sticker.vertices.push(new THREE.Vector3(0,  .45,  .45)); 
+			sticker.vertices.push(new THREE.Vector3(0,  .45, -.45)); 
+			sticker.vertices.push(new THREE.Vector3(0, -.45, -.45)); 
+		}
+		else if (axis==3)
+		{
+			sticker.vertices.push(new THREE.Vector3(-.45,  .45, 0.0)); 
+			sticker.vertices.push(new THREE.Vector3( .45,  .45, 0.0)); 
+			sticker.vertices.push(new THREE.Vector3( .45, -.45, 0.0)); 
+			sticker.vertices.push(new THREE.Vector3(-.45, -.45, 0.0)); 
+		}
+		sticker.faces.push(new THREE.Face3(0, 1, 2)); 
+		sticker.faces.push(new THREE.Face3(0, 2, 3)); 
+		sticker.material = new THREE.MeshBasicMaterial({color:color,side:THREE.DoubleSide}); 
+		sticker.mesh = new THREE.Mesh(sticker, sticker.material); 
+		sticker.mesh.position.set(x,y,z); 
+		scene.add(sticker.mesh); 
+	}
+
+	function init()
+	{	
+		camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100000);
+		camera.position.x = 6;
+		camera.position.y = 6;
+		camera.position.z = 6;
+		renderer = new THREE.WebGLRenderer();
+		renderer.setSize(window.innerWidth*.65, window.innerHeight*.65);
+		document.getElementById('cube').appendChild(renderer.domElement);
+		controls = new THREE.TrackballControls(camera, renderer.domElement);
+		controls.target.set(0,0,0);
+		controls.addEventListener('change', render);
+
+		scene = new THREE.Scene();
+		cube = new THREE.CubeGeometry(3,3,3);
+		var material = new THREE.MeshBasicMaterial({color:0x000000});
+		var mesh = new THREE.Mesh(cube,material);
+		scene.add(mesh);
+
+		stickinit(U1,0xFFFFFF,1,-1,1.55,-1);
+		stickinit(U2,0xFFFFFF,1,0,1.55,-1);
+		stickinit(U3,0xFFFFFF,1,1,1.55,-1);
+		stickinit(U4,0xFFFFFF,1,-1,1.55,0);
+		stickinit(U5,0xFFFFFF,1,0,1.55,0);
+		stickinit(U6,0xFFFFFF,1,1,1.55,0);
+		stickinit(U7,0xFFFFFF,1,-1,1.55,1);
+		stickinit(U8,0xFFFFFF,1,0,1.55,1);
+		stickinit(U9,0xFFFFFF,1,1,1.55,1);
+		stickinit(R1,0xFF0000,2,1.55,1,1);
+		stickinit(R2,0xFF0000,2,1.55,1,0);
+		stickinit(R3,0xFF0000,2,1.55,1,-1);
+		stickinit(R4,0xFF0000,2,1.55,0,1);
+		stickinit(R5,0xFF0000,2,1.55,0,0);
+		stickinit(R6,0xFF0000,2,1.55,0,-1);
+		stickinit(R7,0xFF0000,2,1.55,-1,1);
+		stickinit(R8,0xFF0000,2,1.55,-1,0);
+		stickinit(R9,0xFF0000,2,1.55,-1,-1);
+		stickinit(F1,0x32CD32,3,-1,1,1.55);
+		stickinit(F2,0x32CD32,3,0,1,1.55);
+		stickinit(F3,0x32CD32,3,1,1,1.55);
+		stickinit(F4,0x32CD32,3,-1,0,1.55);
+		stickinit(F5,0x32CD32,3,0,0,1.55);
+		stickinit(F6,0x32CD32,3,1,0,1.55);
+		stickinit(F7,0x32CD32,3,-1,-1,1.55);
+		stickinit(F8,0x32CD32,3,0,-1,1.55);
+		stickinit(F9,0x32CD32,3,1,-1,1.55);
+		stickinit(D1,0xFFFF00,1,-1,-1.55,-1);
+		stickinit(D2,0xFFFF00,1,0,-1.55,-1);
+		stickinit(D3,0xFFFF00,1,1,-1.55,-1);
+		stickinit(D4,0xFFFF00,1,-1,-1.55,0);
+		stickinit(D5,0xFFFF00,1,0,-1.55,0);
+		stickinit(D6,0xFFFF00,1,1,-1.55,0);
+		stickinit(D7,0xFFFF00,1,-1,-1.55,1);
+		stickinit(D8,0xFFFF00,1,0,-1.55,1);
+		stickinit(D9,0xFFFF00,1,1,-1.55,1);
+		stickinit(L1,0xFFA500,2,-1.55,1,1);
+		stickinit(L2,0xFFA500,2,-1.55,1,0);
+		stickinit(L3,0xFFA500,2,-1.55,1,-1);
+		stickinit(L4,0xFFA500,2,-1.55,0,1);
+		stickinit(L5,0xFFA500,2,-1.55,0,0);
+		stickinit(L6,0xFFA500,2,-1.55,0,-1);
+		stickinit(L7,0xFFA500,2,-1.55,-1,1);
+		stickinit(L8,0xFFA500,2,-1.55,-1,0);
+		stickinit(L9,0xFFA500,2,-1.55,-1,-1);
+		stickinit(B1,0x0000FF,3,-1,1,-1.55);
+		stickinit(B2,0x0000FF,3,0,1,-1.55);
+		stickinit(B3,0x0000FF,3,1,1,-1.55);
+		stickinit(B4,0x0000FF,3,-1,0,-1.55);
+		stickinit(B5,0x0000FF,3,0,0,-1.55);
+		stickinit(B6,0x0000FF,3,1,0,-1.55);
+		stickinit(B7,0x0000FF,3,-1,-1,-1.55);
+		stickinit(B8,0x0000FF,3,0,-1,-1.55);
+		stickinit(B9,0x0000FF,3,1,-1,-1.55);
+	}	
+	function animate()
+	{	
+		requestAnimationFrame(animate);
+		controls.update();
+	}	
+	function render()
+	{
+		renderer.render(scene, camera);
+	}
+	function resetview()
+	{
+		controls.reset();
+	}
+	function cubeupdate(cubestate)
+	{
+		U1.mesh.material.color.setHex(colors[Math.floor(cubestate[0][0]/9)]);
+		U2.mesh.material.color.setHex(colors[Math.floor(cubestate[0][1]/9)]);
+		U3.mesh.material.color.setHex(colors[Math.floor(cubestate[0][2]/9)]);
+		U4.mesh.material.color.setHex(colors[Math.floor(cubestate[0][7]/9)]);
+		U5.mesh.material.color.setHex(colors[Math.floor(cubestate[0][8]/9)]);
+		U6.mesh.material.color.setHex(colors[Math.floor(cubestate[0][3]/9)]);
+		U7.mesh.material.color.setHex(colors[Math.floor(cubestate[0][6]/9)]);
+		U8.mesh.material.color.setHex(colors[Math.floor(cubestate[0][5]/9)]);
+		U9.mesh.material.color.setHex(colors[Math.floor(cubestate[0][4]/9)]);
+		R1.mesh.material.color.setHex(colors[Math.floor(cubestate[1][0]/9)]);
+		R2.mesh.material.color.setHex(colors[Math.floor(cubestate[1][1]/9)]);
+		R3.mesh.material.color.setHex(colors[Math.floor(cubestate[1][2]/9)]);
+		R4.mesh.material.color.setHex(colors[Math.floor(cubestate[1][7]/9)]);
+		R5.mesh.material.color.setHex(colors[Math.floor(cubestate[1][8]/9)]);
+		R6.mesh.material.color.setHex(colors[Math.floor(cubestate[1][3]/9)]);
+		R7.mesh.material.color.setHex(colors[Math.floor(cubestate[1][6]/9)]);
+		R8.mesh.material.color.setHex(colors[Math.floor(cubestate[1][5]/9)]);
+		R9.mesh.material.color.setHex(colors[Math.floor(cubestate[1][4]/9)]);
+		F1.mesh.material.color.setHex(colors[Math.floor(cubestate[2][0]/9)]);
+		F2.mesh.material.color.setHex(colors[Math.floor(cubestate[2][1]/9)]);
+		F3.mesh.material.color.setHex(colors[Math.floor(cubestate[2][2]/9)]);
+		F4.mesh.material.color.setHex(colors[Math.floor(cubestate[2][7]/9)]);
+		F5.mesh.material.color.setHex(colors[Math.floor(cubestate[2][8]/9)]);
+		F6.mesh.material.color.setHex(colors[Math.floor(cubestate[2][3]/9)]);
+		F7.mesh.material.color.setHex(colors[Math.floor(cubestate[2][6]/9)]);
+		F8.mesh.material.color.setHex(colors[Math.floor(cubestate[2][5]/9)]);
+		F9.mesh.material.color.setHex(colors[Math.floor(cubestate[2][4]/9)]);
+		D1.mesh.material.color.setHex(colors[Math.floor(cubestate[3][6]/9)]);
+		D2.mesh.material.color.setHex(colors[Math.floor(cubestate[3][5]/9)]);
+		D3.mesh.material.color.setHex(colors[Math.floor(cubestate[3][4]/9)]);
+		D4.mesh.material.color.setHex(colors[Math.floor(cubestate[3][7]/9)]);
+		D5.mesh.material.color.setHex(colors[Math.floor(cubestate[3][8]/9)]);
+		D6.mesh.material.color.setHex(colors[Math.floor(cubestate[3][3]/9)]);
+		D7.mesh.material.color.setHex(colors[Math.floor(cubestate[3][0]/9)]);
+		D8.mesh.material.color.setHex(colors[Math.floor(cubestate[3][1]/9)]);
+		D9.mesh.material.color.setHex(colors[Math.floor(cubestate[3][2]/9)]);
+		B1.mesh.material.color.setHex(colors[Math.floor(cubestate[4][2]/9)]);
+		B2.mesh.material.color.setHex(colors[Math.floor(cubestate[4][1]/9)]);
+		B3.mesh.material.color.setHex(colors[Math.floor(cubestate[4][0]/9)]);
+		B4.mesh.material.color.setHex(colors[Math.floor(cubestate[4][3]/9)]);
+		B5.mesh.material.color.setHex(colors[Math.floor(cubestate[4][8]/9)]);
+		B6.mesh.material.color.setHex(colors[Math.floor(cubestate[4][7]/9)]);
+		B7.mesh.material.color.setHex(colors[Math.floor(cubestate[4][4]/9)]);
+		B8.mesh.material.color.setHex(colors[Math.floor(cubestate[4][5]/9)]);
+		B9.mesh.material.color.setHex(colors[Math.floor(cubestate[4][6]/9)]);
+		L1.mesh.material.color.setHex(colors[Math.floor(cubestate[5][2]/9)]);
+		L2.mesh.material.color.setHex(colors[Math.floor(cubestate[5][1]/9)]);
+		L3.mesh.material.color.setHex(colors[Math.floor(cubestate[5][0]/9)]);
+		L4.mesh.material.color.setHex(colors[Math.floor(cubestate[5][3]/9)]);
+		L5.mesh.material.color.setHex(colors[Math.floor(cubestate[5][8]/9)]);
+		L6.mesh.material.color.setHex(colors[Math.floor(cubestate[5][7]/9)]);
+		L7.mesh.material.color.setHex(colors[Math.floor(cubestate[5][4]/9)]);
+		L8.mesh.material.color.setHex(colors[Math.floor(cubestate[5][5]/9)]);
+		L9.mesh.material.color.setHex(colors[Math.floor(cubestate[5][6]/9)]);
+		render();
+	}
+	function randomscramble()
+	{
+		document.getElementById("scramble").innerHTML=scrambler();
+		parsescramble(0);
+	}
+	function parsescramble(where)
+	{	
+		var pos, scramble, solution, sequence;
+		if (where==0)
+		{
+			sequence=document.getElementById("scramble").value;
+		}
+		else if (where==1)
+		{
+			pos=document.getElementById("scramble").selectionStart;
+			sequence=document.getElementById("scramble").value.substring(0,pos).replace(/\n/g," ");
+		}
+		else if (where==2)
+		{
+			pos=document.getElementById("solution").selectionStart;
+			scramble=document.getElementById("scramble").value.replace(/\n/g," ");
+			solution=document.getElementById("solution").value.substring(0,pos).replace(/\n/g," ");
+			sequence=scramble+" "+solution;
+		}
+
+		var scrmoves = sequence.split(" ");
+		cubestate = solved;
+		for (var i = 0; i < scrmoves.length; i+=1)
+		{
+			cubestate=movemaker(scrmoves[i],cubestate);
+		}
+
+	cubeupdate(cubestate);
+	writeurl();
+	}
+
+	function writeurl()
+	{
+		var sc1=document.getElementById("scramble").value.replace(/ /g,'_');
+		var so1=document.getElementById("solution").value.replace(/ /g,'_').replace(/\n/g,'\\n');
+		document.getElementById("url").innerHTML="xmdi.github.io/index.html?sc="+sc1+"&so="+so1;
+	}
+
+
+</script>
+<div id="inputs">
+	<textarea id="scramble" style="background-color:black;color:white;font-size:18px" onclick="parsescramble(1)" onkeyup="parsescramble(1)" placeholder="SCRAMBLE" type="text" rows="1" cols="60"></textarea><br>
+	<textarea id="solution" style="background-color:black;color:white;font-size:18px" onclick="parsescramble(2)" onkeyup="parsescramble(2)" placeholder="SOLUTION" type="text" rows="10" cols="60"></textarea><br>
+<button style="background-color:black;color:white;font-size:18px" onclick="resetview()">RESET VIEW</button>
+<button style="background-color:black;color:white;font-size:18px" onclick="randomscramble()">RANDOM</button>
+<br></font><textarea id="url" style="background-color:black;color:white;font-size:10px" onclick="this.focus();this.select()" readonly="readonly" rows="3" cols="120"> </textarea>
+
+</div>
 </body>
 </html>
