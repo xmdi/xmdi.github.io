@@ -5,7 +5,7 @@ function movemaker(move,cubestate) {
 if (move=="U"){
 		cubestate=Umove(cubestate);
 	}
-	if (move=="U2"){
+	if (move=="U2"||move=="U2'"){
 		cubestate=Umove(Umove(cubestate));
 	}
 	else if (move=="U'"){
@@ -14,7 +14,7 @@ if (move=="U"){
 	else if (move=="D"){
 		cubestate=Dmove(cubestate);
 	}
-	else if (move=="D2"){
+	else if (move=="D2"||move=="D2'"){
 		cubestate=Dmove(Dmove(cubestate));
 	}
 	else if (move=="D'"){
@@ -23,7 +23,7 @@ if (move=="U"){
 	else if (move=="R"){
 		cubestate=Rmove(cubestate);
 	}
-	else if (move=="R2"){
+	else if (move=="R2"||move=="R2'"){
 		cubestate=Rmove(Rmove(cubestate));
 	}
 	else if (move=="R'"){
@@ -32,7 +32,7 @@ if (move=="U"){
 	else if (move=="L"){
 		cubestate=Lmove(cubestate);
 	}
-	else if (move=="L2"){
+	else if (move=="L2"||move=="L2'"){
 		cubestate=Lmove(Lmove(cubestate));
 	}
 	else if (move=="L'"){
@@ -41,7 +41,7 @@ if (move=="U"){
 	else if (move=="F"){
 		cubestate=Fmove(cubestate);
 	}
-	else if (move=="F2"){
+	else if (move=="F2"||move=="F2'"){
 		cubestate=Fmove(Fmove(cubestate));
 	}
 	else if (move=="F'"){
@@ -50,7 +50,7 @@ if (move=="U"){
 	else if (move=="B"){
 		cubestate=Bmove(cubestate);
 	}
-	else if (move=="B2"){
+	else if (move=="B2"||move=="B2'"){
 		cubestate=Bmove(Bmove(cubestate));
 	}
 	else if (move=="B'"){
@@ -59,7 +59,7 @@ if (move=="U"){
 	else if (move=="M"){
 		cubestate=Lmove(Lmove(Lmove(Rmove(Xmove(Xmove(Xmove(cubestate)))))));
 	}
-	else if (move=="M2"){
+	else if (move=="M2"||move=="M2'"){
 		cubestate=Rmove(Rmove(Lmove(Lmove(Xmove(Xmove(cubestate))))));
 	}
 	else if (move=="M'"){
@@ -68,7 +68,7 @@ if (move=="U"){
 	else if (move=="E"){
 		cubestate=Dmove(Dmove(Dmove(Umove(Ymove(Ymove(Ymove(cubestate)))))));
 	}
-	else if (move=="E2"){
+	else if (move=="E2"||move=="E2'"){
 		cubestate=Dmove(Dmove(Umove(Umove(Ymove(Ymove(cubestate))))));
 	}
 	else if (move=="E'"){
@@ -77,7 +77,7 @@ if (move=="U"){
 	else if (move=="S"){
 		cubestate=Fmove(Fmove(Fmove(Bmove(Zmove(cubestate)))));
 	}
-	else if (move=="S2"){
+	else if (move=="S2"||move=="S2'"){
 		cubestate=Fmove(Fmove(Bmove(Bmove(Zmove(Zmove(cubestate))))));
 	}
 	else if (move=="S'"){
@@ -86,7 +86,7 @@ if (move=="U"){
 	else if (move=="r"){
 		cubestate=Lmove(Xmove(cubestate));
 	}
-	else if (move=="r2"){
+	else if (move=="r2"||move=="r2'"){
 		cubestate=Xmove(Xmove(Lmove(Lmove(cubestate))));
 	}
 	else if (move=="r'"){
@@ -95,7 +95,7 @@ if (move=="U"){
 	else if (move=="l"){
 		cubestate=Rmove(Xmove(Xmove(Xmove(cubestate))));
 	}
-	else if (move=="l2"){
+	else if (move=="l2"||move=="l2'"){
 		cubestate=Xmove(Xmove(Rmove(Rmove(cubestate))));
 	}
 	else if (move=="l'"){
@@ -104,7 +104,7 @@ if (move=="U"){
 	else if (move=="f"){
 		cubestate=Bmove(Zmove(cubestate));
 	}
-	else if (move=="f2"){
+	else if (move=="f2"||move=="f2'"){
 		cubestate=Bmove(Bmove(Zmove(Zmove(cubestate))));
 	}
 	else if (move=="f'"){
@@ -113,7 +113,7 @@ if (move=="U"){
 	else if (move=="b"){
 		cubestate=Fmove(Zmove(Zmove(Zmove(cubestate))));
 	}
-	else if (move=="b2"){
+	else if (move=="b2"||move=="b2'"){
 		cubestate=Fmove(Fmove(Zmove(Zmove(cubestate))));
 	}
 	else if (move=="b'"){
@@ -122,7 +122,7 @@ if (move=="U"){
 	else if (move=="d"){
 		cubestate=Umove(Ymove(Ymove(Ymove(cubestate))));
 	}
-	else if (move=="d2"){
+	else if (move=="d2"||move=="d2'"){
 		cubestate=Umove(Umove(Ymove(Ymove(cubestate))));
 	}
 	else if (move=="d'"){
@@ -131,7 +131,7 @@ if (move=="U"){
 	else if (move=="u"){
 		cubestate=Ymove(Dmove(cubestate));
 	}
-	else if (move=="u2"){
+	else if (move=="u2"||move=="u2'"){
 		cubestate=Ymove(Ymove(Dmove(Dmove(cubestate))));
 	}
 	else if (move=="u'"){
@@ -140,7 +140,7 @@ if (move=="U"){
 	else if (move=="x"){
 		cubestate=Xmove(cubestate);
 	}
-	else if (move=="x2"){
+	else if (move=="x2"||move=="x2'"){
 		cubestate=Xmove(Xmove(cubestate));
 	}
 	else if (move=="x'"){
@@ -149,7 +149,7 @@ if (move=="U"){
 	else if (move=="y"){
 		cubestate=Ymove(cubestate);
 	}
-	else if (move=="y2"){
+	else if (move=="y2"||move=="y2'"){
 		cubestate=Ymove(Ymove(cubestate));
 	}
 	else if (move=="y'"){
@@ -158,7 +158,7 @@ if (move=="U"){
 	else if (move=="z"){
 		cubestate=Zmove(cubestate);
 	}
-	else if (move=="z2"){
+	else if (move=="z2"||move=="z2'"){
 		cubestate=Zmove(Zmove(cubestate));
 	}
 	else if (move=="z'"){

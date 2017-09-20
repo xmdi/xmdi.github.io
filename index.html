@@ -93,9 +93,10 @@
 			}
 			else if (pair[0]=="so")
 			{
-				var so0=searchParams.get('so').replace(/_/g," ");
-				so0=so0.replace(/\^n /g,"\n");
+				var so0=searchParams.get('so');
+				so0=so0.replace(/_\^n_/g,"\n").replace(/_/g," ");
 				document.getElementById("solution").innerHTML=so0;
+				parsescramble(99);
 			}
 		}
 	}
@@ -279,6 +280,7 @@
 	function randomscramble()
 	{
 		document.getElementById("scramble").innerHTML=scrambler();
+		document.getElementById("solution").innerText="\ ";
 		parsescramble(0);
 	}
 	function parsescramble(where)
@@ -287,6 +289,10 @@
 		if (where==0)
 		{
 			sequence=document.getElementById("scramble").value;
+		}
+		else if (where==99)
+		{
+			sequence=document.getElementById("scramble").value+document.getElementById("solution").value;
 		}
 		else if (where==1)
 		{
@@ -310,6 +316,50 @@
 
 	cubeupdate(cubestate);
 	writeurl();
+	writemovecount();
+	}
+
+	function writemovecount()
+	{
+		var str="";
+		var sol= document.getElementById("solution").value.split(/\r|\r\n|\n/);
+		var mc=0;
+		var nsc=0;
+		for (var i=0; i < sol.length ; i+=1)
+		{
+			var ns = 0;
+      			var m = 0;
+			var soli = sol[i].trim().split(" ");
+      			for (var j=0; j<soli.length; j+=1)
+			{
+				
+				if (((soli[j][0]=="R") || (soli[j][0]=="L") || (soli[j][0]=="U")||
+				(soli[j][0]=="D") || (soli[j][0]=="F") || (soli[j][0]=="B")||
+				(soli[j][0]=="r") || (soli[j][0]=="l") || (soli[j][0]=="u")||
+				(soli[j][0]=="d") || (soli[j][0]=="f") || (soli[j][0]=="b")||
+				(soli[j][0]=="E") || (soli[j][0]=="M") || (soli[j][0]=="S"))&&
+				((soli[j].length==1)||(soli[j][1]=="'")||(soli[j][1]=="2")))
+				{
+					m+=1;
+					if ((soli[j][0]=="E") || (soli[j][0]=="M") || (soli[j][0]=="S"))
+					{
+						ns+=1;
+					}
+				}
+			}
+      			if (m)
+      			{
+				str += m+ns +"h|"+m+"s\n";
+				mc+=m;
+				nsc+=ns;
+			}
+			else
+			{
+				str+="\n"
+			}
+		}
+		document.getElementById("movecounts").innerHTML= str;
+		document.getElementById("movecounts2").innerHTML=mc+nsc+"h|"+mc+"s";
 	}
 
 	function writeurl()
@@ -323,11 +373,14 @@
 </script>
 <div id="inputs">
 	<textarea id="scramble" style="background-color:black;color:white;font-size:18px" onclick="parsescramble(1)" onkeyup="parsescramble(1)" placeholder="SCRAMBLE" type="text" rows="1" cols="60"></textarea><br>
-	<textarea id="solution" style="background-color:black;color:white;font-size:18px" onclick="parsescramble(2)" onkeyup="parsescramble(2)" placeholder="SOLUTION" type="text" rows="10" cols="60"></textarea><br>
-<button style="background-color:black;color:white;font-size:18px" onclick="resetview()">RESET VIEW</button>
-<button style="background-color:black;color:white;font-size:18px" onclick="randomscramble()">RANDOM</button>
-<br></font><textarea id="url" style="background-color:black;color:white;font-size:10px" onclick="this.focus();this.select()" readonly="readonly" rows="3" cols="120"> </textarea>
-
+	<table align="center"><tr><td><textarea id="solution" style="background-color:black;color:white;font-size:18px" onclick="parsescramble(2)" onkeyup="parsescramble(2)" placeholder="SOLUTION" type="text" rows="8" cols="51"></textarea>
+			</td><td><textarea id="movecounts" style="background-color:black;color:white;font-size:18px" readonly="readonly" onclick="parsescramble(2)" onkeyup="parsescramble(2)" type="text" rows="8" cols="7"></textarea>
+			</td></tr>
+			<tr><td align="center"><button style="background-color:black;color:white;font-size:18px" onclick="resetview()">RESET VIEW</button>
+			<button style="background-color:black;color:white;font-size:18px" onclick="randomscramble()">RANDOM</button></td>
+			<td><textarea id="movecounts2" style="background-color:black;color:white;font-size:18px" readonly="readonly" onclick="parsescramble(2)" onkeyup="parsescramble(2)" type="text" rows="1" cols="7"></textarea>
+			</td></tr></table>
+<textarea id="url" style="background-color:black;color:white;font-size:10px" onclick="this.focus();this.select()" readonly="readonly" rows="3" cols="120"> </textarea>
 </div>
 </body>
 </html>
