@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 750px;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){background-color: #f2f2f2}
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+.slider {
+    -webkit-appearance: none;
+    width: 750px;
+    height: 15px;
+    background: #d3d3d3;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #4CAF50;
+    cursor: pointer;
+}
+.myCheckbox input {
+    display: none;
+    width= 10px;
+}
+.myCheckbox span {
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: #FFFFFF;
+    border: 3px solid grey;  
+}
+.myCheckbox input:checked + span {
+    background: #4CAF50;
+    border: 3px solid #4CAF50;
+}
+.bottom {
+    position: fixed;
+    bottom: 0;
+}
+</style>
+<script>
+function day(d)
+{
+	if (d>365) {d=d%365};
+    if (d<1) {d=d+365};
+	if (d<32){out="Jan "+d;}
+	else if (d<60){out="Feb "+(d-31);}
+	else if (d<91){out="Mar "+(d-59);}
+	else if (d<121){out="Apr "+(d-90);}
+	else if (d<152){out="May "+(d-120);}
+	else if (d<182){out="Jun "+(d-151);}
+	else if (d<213){out="Jul "+(d-181);}
+	else if (d<244){out="Aug "+(d-212);}
+	else if (d<274){out="Sep "+(d-243);}
+	else if (d<305){out="Oct "+(d-273);}
+	else if (d<335){out="Nov "+(d-304);}
+	else {out="Dec "+(d-334);}
+	return out;
+}
+
+function cv(lfd,weeks1,weeks2,weeks3,weeks4,f)
+{
+    if (f==0){return [Number(lfd)+(weeks3-weeks1)*7+17,Number(lfd)+(weeks4-weeks2)*7+17];}
+    else {return [Number(lfd)+(weeks3)*7+17,Number(lfd)+(weeks4)*7+17];}
+}
+
+function submit()
+{
+	lfd=document.getElementById("range").value;
+	document.getElementById("sliderd").innerHTML="Slide to Select Average Last-Frost Date: "+day(Number(lfd));
+	var tasks=[];
+    if (document.getElementById("asparagus").checked){tasks.push({task:"Start asparagus indoors.", value:cv(lfd,14,12,4,4,0)});tasks.push({task:"Set out asparagus.", value:cv(lfd,14,12,4,4,1)});}
+    if (document.getElementById("beans").checked){tasks.push({task:"Start beans indoors.", value:cv(lfd,4,3,1,2,0)});tasks.push({task:"Set out beans.", value:cv(lfd,4,3,1,2,1)});}
+    if (document.getElementById("beets").checked){tasks.push({task:"Start beets indoors.", value:cv(lfd,4,4,-4,-4,0)});tasks.push({task:"Set out beets.", value:cv(lfd,4,4,-4,-4,1)});}
+    if (document.getElementById("broccoli").checked){tasks.push({task:"Start broccoli indoors.", value:cv(lfd,8,6-4,3,0)});tasks.push({task:"Set out broccoli.", value:cv(lfd,8,6-4,3,1)});}
+    if (document.getElementById("brussels_sprouts").checked){tasks.push({task:"Start brussels sprouts indoors.", value:cv(lfd,8,6,-4,3,0)});tasks.push({task:"Set out brussels sprouts.", value:cv(lfd,8,6,-4,3,1)});}
+    if (document.getElementById("cabbage").checked){tasks.push({task:"Start cabbage indoors.", value:cv(lfd,8,6,-5,3,0)});tasks.push({task:"Set out cabbage.", value:cv(lfd,8,6,-5,3,1)});}
+    if (document.getElementById("carrots").checked){tasks.push({task:"Start carrots indoors.", value:cv(lfd,6,5,-4,-4,0)});tasks.push({task:"Set out carrots.", value:cv(lfd,6,5,-4,-4,1)});}
+    if (document.getElementById("cauliflower").checked){tasks.push({task:"Start cauliflower indoors.", value:cv(lfd,8,6,-4,2,0)});tasks.push({task:"Set out cauliflower.", value:cv(lfd,8,6,-4,2,1)});}
+    if (document.getElementById("celery").checked){tasks.push({task:"Start celery indoors.", value:cv(lfd,8,6,-3,4,0)});tasks.push({task:"Set out celery.", value:cv(lfd,8,6,-3,4,1)});}
+    if (document.getElementById("collards").checked){tasks.push({task:"Start collards indoors.", value:cv(lfd,8,6,-4,2,0)});tasks.push({task:"Set out collards.", value:cv(lfd,8,6,-4,2,1)});}
+    if (document.getElementById("corn").checked){tasks.push({task:"Start corn indoors.", value:cv(lfd,4,4,2,3,0)});tasks.push({task:"Set out corn.", value:cv(lfd,4,4,2,3,1)});}
+	if (document.getElementById("cucumbers").checked){tasks.push({task:"Start cucumbers indoors.", value:cv(lfd,3,2,-1,-1,0)});tasks.push({task:"Set out cucumbers.", value:cv(lfd,3,2,-1,-1,1)});}
+    if (document.getElementById("eggplant").checked){tasks.push({task:"Start eggplant indoors.", value:cv(lfd,10,8,2,3,0)});tasks.push({task:"Set out eggplant.", value:cv(lfd,10,8,2,3,1)});}
+    if (document.getElementById("endive").checked){tasks.push({task:"Start endive indoors.", value:cv(lfd,5,4,-4,2,0)});tasks.push({task:"Set out endive.", value:cv(lfd,5,4,-4,2,1)});}
+    if (document.getElementById("garlic").checked){tasks.push({task:"Start garlic indoors.", value:cv(lfd,6,4,-4,1,0)});tasks.push({task:"Set out garlic.", value:cv(lfd,6,4,-4,1,1)});}
+    if (document.getElementById("kale").checked){tasks.push({task:"Start kale indoors.", value:cv(lfd,8,6,-5,2,0)});tasks.push({task:"Set out kale.", value:cv(lfd,8,6,-5,2,1)});}
+    if (document.getElementById("kohlrabi").checked){tasks.push({task:"Start kohlrabi indoors.", value:cv(lfd,8,6-5,2,0)});tasks.push({task:"Set out kohlrabi.", value:cv(lfd,8,6-5,2,1)});}
+    if (document.getElementById("leeks").checked){tasks.push({task:"Start leeks indoors.", value:cv(lfd,6,4,-5,2,0)});tasks.push({task:"Set out leeks.", value:cv(lfd,6,4,-5,2,1)});}
+    if (document.getElementById("lettuce").checked){tasks.push({task:"Start lettuce indoors.", value:cv(lfd,6,4,-2,3,0)});tasks.push({task:"Set out lettuce.", value:cv(lfd,6,4,-2,3,1)});}
+    if (document.getElementById("mustard").checked){tasks.push({task:"Start mustard indoors.", value:cv(lfd,6,4,-5,2,0)});tasks.push({task:"Set out mustard.", value:cv(lfd,6,4,-5,2,1)});}
+    if (document.getElementById("okra").checked){tasks.push({task:"Start okra indoors.", value:cv(lfd,8,6,3,4,0)});tasks.push({task:"Set out okra.", value:cv(lfd,8,6,3,4,1)});}
+    if (document.getElementById("onions_bulb").checked){tasks.push({task:"Start bulb onions indoors.", value:cv(lfd,6,4-6,2,0)});tasks.push({task:"Set out bulb onions.", value:cv(lfd,6,4-6,2,1)});}
+    if (document.getElementById("onions_bunch").checked){tasks.push({task:"Start bunch onions indoors.", value:cv(lfd,6,4,-5,2,0)});tasks.push({task:"Set out bunch onions.", value:cv(lfd,6,4,-5,2,1)});}
+	if (document.getElementById("parsley").checked){tasks.push({task:"Start parsley indoors.", value:cv(lfd,6,4,-6,6,0)});tasks.push({task:"Set out parsley.", value:cv(lfd,6,4,-6,6,1)});}
+    if (document.getElementById("parsnips").checked){tasks.push({task:"Start parsnips indoors.", value:cv(lfd,6,4,-4,4,0)});tasks.push({task:"Set out parsnips.", value:cv(lfd,6,4,-4,4,1)});}
+    if (document.getElementById("peanuts").checked){tasks.push({task:"Start peanuts indoors.", value:cv(lfd,6,4,0,0,0)});tasks.push({task:"Set out peanuts.", value:cv(lfd,6,4,0,0,1)});}
+    if (document.getElementById("peas").checked){tasks.push({task:"Start peas indoors.", value:cv(lfd,4,4,-4,3,0)});tasks.push({task:"Set out peas.", value:cv(lfd,4,4,-4,3,1)});}
+    if (document.getElementById("peppers").checked){tasks.push({task:"Start peppers indoors.", value:cv(lfd,8,6,2,3,0)});tasks.push({task:"Set out peppers.", value:cv(lfd,8,6,2,3,1)});}
+    if (document.getElementById("spinach").checked){tasks.push({task:"Start spinach indoors.", value:cv(lfd,6,4,-6,-3,0)});tasks.push({task:"Set out spinach.", value:cv(lfd,6,4,-6,-3,1)});}
+    if (document.getElementById("squash").checked){tasks.push({task:"Start squash indoors.", value:cv(lfd,4,4,4,4,0)});tasks.push({task:"Set out squash.", value:cv(lfd,4,4,4,4,1)});}
+    if (document.getElementById("sweet_potatoes").checked){tasks.push({task:"Start sweet potatoes indoors.", value:cv(lfd,8,6,2,3,0)});tasks.push({task:"Set out sweet potatoes.", value:cv(lfd,8,6,2,3,1)});}
+    if (document.getElementById("swiss_chard").checked){tasks.push({task:"Start swiss chard indoors.", value:cv(lfd,4,4,-4,-3,0)});tasks.push({task:"Set out swiss chard.", value:cv(lfd,4,4,-4,-3,1)});}
+    if (document.getElementById("tomatoes").checked){tasks.push({task:"Start tomatoes indoors.", value:cv(lfd,10,6,4,4,0)});tasks.push({task:"Set out tomatoes.", value:cv(lfd,10,6,4,4,1)});}
+    if (document.getElementById("turnips").checked){tasks.push({task:"Start turnips indoors.", value:cv(lfd,4,3,-4,-4,0)});tasks.push({task:"Set out turnips.", value:cv(lfd,4,3,-4,-4,1)});}
+
+    e = document.getElementById("selector");
+    sel = e.options[e.selectedIndex].value;
+    if (sel==0) {tasks.sort(function(a,b){return a.value[0]-b.value[0];});}
+    else if (sel==1) {tasks.sort(function(a,b){return a.value[0]-b.value[0];});}
+    else if (sel==2) {tasks.sort(function(a,b){return a.value[0]+a.value[1]-b.value[0]-b.value[1];});}
+    else if (sel==3) {tasks.sort(function(a,b){return a.value[1]-b.value[1];});}
+	
+    document.getElementById("schedule").innerHTML="";
+    out="<table id='table'><tr><th style='width:120px'>Date</th><th>Task</th></tr>";
+    for (i=0; i<tasks.length; i++)
+    {
+        if (sel==0) 
+        {
+            if (tasks[i].value[0]==tasks[i].value[1]) 
+            {
+                out+="<tr><td>"+day(tasks[i].value[0])+"</td><td>"+tasks[i].task+"</td></tr>";
+            }
+            else
+            {
+                out+="<tr><td>"+day(tasks[i].value[0])+"-"+day(tasks[i].value[1])+"</td><td>"+tasks[i].task+"</td></tr>";
+            }
+        }
+        else if (sel==1) {out+="<tr><td>"+day(tasks[i].value[0])+"</td><td>"+tasks[i].task+"</td></tr>";}
+        else if (sel==2) {out+="<tr><td>"+day(Math.floor((tasks[i].value[0]+tasks[i].value[1])/2))+"</td><td>"+tasks[i].task+"</td></tr>";}
+        else if (sel==3) {out+="<tr><td>"+day(tasks[i].value[1])+"</td><td>"+tasks[i].task+"</td></tr>";}
+    }    
+    out+="</table>"
+    document.getElementById("schedule").innerHTML=out;
+
+window.onload = function() 
+{
+    document.getElementById("print").onclick = function() 
+    {
+        newWin= window.open("");
+        newWin.document.write(divToPrint=document.getElementById("table").outerHTML);
+        newWin.print();
+        newWin.close();
+    }
+    return false;
+}}
+</script>
+<title>Garden Scheduler</title>
+</head>
+<body>
+<div class="sliderc">
+<p id="sliderd">Slide to Select Average Last-Frost Date:</p>
+<input class="slider" id="range" type="range" oninput="submit()" min="1" max="365" value="100">
+</div>
+<p>
+Asparagus:<input id="asparagus" type="checkbox" oninput="submit()">
+Beans:<input id="beans" type="checkbox" oninput="submit()" checked>
+Beets:<input id="beets" type="checkbox" oninput="submit()">
+Broccoli:<input id="broccoli" type="checkbox" oninput="submit()">
+Brussels sprouts:<input id="brussels_sprouts" type="checkbox" oninput="submit()">
+Cabbage:<input id="cabbage" type="checkbox" oninput="submit()">
+Carrots:<input id="carrots" type="checkbox" oninput="submit()">
+Cauliflower:<input id="cauliflower" type="checkbox" oninput="submit()"><br>
+Celery:<input id="celery" type="checkbox" oninput="submit()">
+Collards:<input id="collards" type="checkbox" oninput="submit()">
+Corn:<input id="corn" type="checkbox" oninput="submit()">
+Cucumbers:<input id="cucumbers" type="checkbox" oninput="submit()">
+Eggplant:<input id="eggplant" type="checkbox" oninput="submit()">
+Endive/Escarole:<input id="endive" type="checkbox" oninput="submit()">
+Garlic:<input id="garlic" type="checkbox" oninput="submit()">
+Kale:<input id="kale" type="checkbox" oninput="submit()">
+Kohlrabi:<input id="kohlrabi" type="checkbox" oninput="submit()"><br>
+Leeks:<input id="leeks" type="checkbox" oninput="submit()">
+Lettuce:<input id="lettuce" type="checkbox" oninput="submit()">
+Mustard:<input id="mustard" type="checkbox" oninput="submit()">
+Okra:<input id="okra" type="checkbox" oninput="submit()">
+Onions (bulb):<input id="onions_bulb" type="checkbox" oninput="submit()">
+Onions (bunch):<input id="onions_bunch" type="checkbox" oninput="submit()">
+Parsley:<input id="parsley" type="checkbox" oninput="submit()">
+Parsnips:<input id="parsnips" type="checkbox" oninput="submit()">
+Peanuts:<input id="peanuts" type="checkbox" oninput="submit()"><br>
+Peas:<input id="peas" type="checkbox" oninput="submit()">
+Peppers:<input id="peppers" type="checkbox" oninput="submit()">
+Spinach:<input id="spinach" type="checkbox" oninput="submit()">
+Squash:<input id="squash" type="checkbox" oninput="submit()">
+Sweet potatoes:<input id="sweet_potatoes" type="checkbox" oninput="submit()">
+Swiss chard:<input id="swiss_chard" type="checkbox" oninput="submit()">
+Tomatoes: <input id="tomatoes" type="checkbox" oninput="submit()" checked>
+Turnips:<input id="turnips" type="checkbox" oninput="submit()">
+</p>
+<select id="selector" oninput="submit()">
+  <option value="0" selected="selected">Show Date Ranges</option>
+  <option value="1">Show Earliest Date</option>
+  <option value="2">Show Middle Date</option>
+  <option value="3">Show Last Date</option>
+</select>
+<a id="print" href="#">Click here to print garden schedule.</a> 
+<p id="schedule"></p>
+<script>submit()</script>
+
+<div class="bottom">Date offsets adapted from: <i>The Organic Gardener's Complete Guide to Vegetables and Fruits</i>. Rodale Press, 1982.<br>
+For non-libertarians, NOAA provides <a href="https://www.ncdc.noaa.gov/sites/default/files/Day-of-Last-Spring-Freeze-Map.jpg" target="_blank">average last-frost dates.</a></div>
+</body>
+</html>
