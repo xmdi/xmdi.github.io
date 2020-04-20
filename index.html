@@ -8,7 +8,7 @@
 <script>
 	window.onload=function(){
 		let sPs=new URLSearchParams(window.location.search);
-		for(var pair of searchParams.entries()){
+		for(var pair of sps.entries()){
 			if (pair[0]=="sc"){
 				var sc0=sPs.get('sc').replace(/_/g," ");
 				document.getElementById("scr").innerHTML=sc0;
