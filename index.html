@@ -61,7 +61,7 @@
 		if (w==0)
 			seq=document.getElementById("scr").value;
 		else if (w==99)
-			seq=document.getElementById("scr").value+document.getElementById("sol").value;
+			seq=(document.getElementById("scr").value+" "+document.getElementById("sol").value).replace(/\n/g," ");
 		else if (w==1)
 		{
 			pos=document.getElementById("scr").selectionStart;
@@ -75,6 +75,7 @@
 			seq=scr+" "+sol;
 		}
 		scrmoves = seq.split(" ");
+		console.log(w,seq)
 		cs=solved;
 		for (q=0;q<scrmoves.length;q++)
 			if (scrmoves[q].length)
