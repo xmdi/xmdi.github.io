@@ -6,25 +6,22 @@
 	<script src="app.js"></script>
 	<script src="cube.js"></script>
 <script>
-	/*window.onload = function() {
-		let searchParams = new URLSearchParams(window.location.search);
-		for (var pair of searchParams.entries())
-		{
-			if (pair[0]=="sc")
-			{
-				var sc0=searchParams.get('sc').replace(/_/g," ");
+	window.onload=function(){
+		let sPs=new URLSearchParams(window.location.search);
+		for(var pair of searchParams.entries()){
+			if (pair[0]=="sc"){
+				var sc0=sPs.get('sc').replace(/_/g," ");
 				document.getElementById("scr").innerHTML=sc0;
 				pScr(0);
 			}
-			else if (pair[0]=="so")
-			{
-				var so0=searchParams.get('so');
+			else if (pair[0]=="so"){
+				var so0=sPs.get('so');
 				so0=so0.replace(/_\^n_/g,"\n").replace(/_/g," ");
 				document.getElementById("sol").innerHTML=so0;
 				pScr(99);
 			}
 		}
-	}*/
+	}
 	function writeMC(){
 		var str="";
 		var sol=document.getElementById("sol").value.split(/\r|\r\n|\n/);
@@ -42,9 +39,9 @@
 					}
 				}	
       			if(m){
-					str+=m+ns+"h|"+m+"s\n";
-					mc+=m;
-					nsc+=ns;
+				str+=m+ns+"h|"+m+"s\n";
+				mc+=m;
+				nsc+=ns;
 				}
 			else
 				str+="\n"
