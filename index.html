@@ -6,6 +6,7 @@
 	<script src="app.js"></script>
 	<script src="cube.js"></script>
 <script>
+	var cs;
 	window.onload=function(){
 		let sPs=new URLSearchParams(window.location.search);
 		for(var pair of sPs.entries()){
@@ -82,7 +83,7 @@
 		writeURL();
 		writeMC();
 	}
-	var cs;
+	initGraphics();
 </script>
 <div>
 	<textarea id="scr" onclick="pScr(1)" onkeyup="pScr(1)" placeholder="SCRAMBLE" type="text" rows="1" cols="60"></textarea><br>
