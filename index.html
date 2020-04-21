@@ -1,31 +1,33 @@
 <style>
-#scr,#sol,#MC,#MC2,#url{background-color:black;color:white;font-size:18px}
+#scr,#sol,#MC,#MC2,#url,#bu{background-color:black;color:white;font-size:18px}
 </style>
 <body style="text-align:center;" bgcolor="black" onLoad="initGraphics();">
-	<canvas id="glC"></canvas>
-	<script src="app.js"></script>
-	<script src="cube.js"></script>
+<canvas id="glC"></canvas>
+<script src="app.js"></script>
+<script src="cube.js"></script>
 <script>
-	var cs;
+	var cs,Esol,Escr,pos;
 	window.onload=function(){
+		Esol=document.getElementById("sol");
+		Escr=document.getElementById("scr");
 		let sPs=new URLSearchParams(window.location.search);
 		for(var pair of sPs.entries()){
 			if (pair[0]=="sc"){
 				var sc0=sPs.get('sc').replace(/_/g," ");
-				document.getElementById("scr").innerHTML=sc0;
+				Escr.innerHTML=sc0;
 				pScr(0);
 			}
 			else if (pair[0]=="so"){
 				var so0=sPs.get('so');
 				so0=so0.replace(/_\^n_/g,"\n").replace(/_/g," ");
-				document.getElementById("sol").innerHTML=so0;
+				Esol.innerHTML=so0;
 				pScr(99);
 			}
 		}
 	}
 	function writeMC(){
 		var str="";
-		var sol=document.getElementById("sol").value.split(/\r|\r\n|\n/);
+		var sol=Esol.value.split(/\r|\r\n|\n/);
 		var mc=0;
 		var nsc=0;
 		for (i=0;i<sol.length;i++){
@@ -52,46 +54,59 @@
 	}
 	function writeURL()
 	{
-		var sc1=document.getElementById("scr").value.replace(/\n/g,'_^n_').replace(/ /g,'_')
-		var so1=document.getElementById("sol").value.replace(/\n/g,'_^n_').replace(/ /g,'_')
+		var sc1=Escr.value.replace(/\n/g,'_^n_').replace(/ /g,'_')
+		var so1=Esol.value.replace(/\n/g,'_^n_').replace(/ /g,'_')
 		document.getElementById("url").innerHTML="http://xmdi.github.io?sc="+sc1+"&so="+so1;
 	}
 	function pScr(w){
-		var pos,scr,sol,seq;
+		var scr,sol,seq
 		if (w==0)
-			seq=document.getElementById("scr").value;
+			seq=Escr.value.replace(/\n/g," ")
 		else if (w==99)
-			seq=(document.getElementById("scr").value+" "+document.getElementById("sol").value).replace(/\n/g," ");
+			seq=(Escr.value+" "+Esol.value).replace(/\n/g," ")
 		else if (w==1)
 		{
-			pos=document.getElementById("scr").selectionStart;
-			seq=document.getElementById("scr").value.substring(0,pos).replace(/\n/g," ");
+			pos=Escr.selectionStart
+			seq=Escr.value.substring(0,pos).replace(/\n/g," ")
 		}
 		else if (w==2)
 		{
-			pos=document.getElementById("sol").selectionStart;
-			scr=document.getElementById("scr").value.replace(/\n/g," ");
-			sol=document.getElementById("sol").value.substring(0,pos).replace(/\n/g," ");
-			seq=scr+" "+sol;
+			pos=Esol.selectionStart
+			scr=Escr.value.replace(/\n/g," ")
+			sol=Esol.value.substring(0,pos).replace(/\n/g," ")
+			seq=scr+" "+sol
 		}
-		scrmoves = seq.split(" ");
-		console.log(w,seq)
+		scrmoves=seq.split(" ")
 		cs=solved;
-		for (q=0;q<scrmoves.length;q++)
-			if (scrmoves[q].length)
-				cs=moveMaker(scrmoves[q],cs);
-		tamperVertices();
-		writeURL();
-		writeMC();
+		for(q=0;q<scrmoves.length;q++)
+			if(scrmoves[q].length)
+				cs=mMa(scrmoves[q],cs)
+		tamperVertices()
+		writeURL()
+		writeMC()
 	}
-	initGraphics();
+	var animoves=0;
+	function ani(aaa){
+		scrx=Escr.value.replace(/\n/g," ");
+		solx=Esol.value.replace(/\n/g," ");
+		scrmoves=scrx.split(" ").concat(solx.split(" ").slice(0,aaa))
+		solmoves=solx.trim().split(" ")
+		cs=solved
+		for(q=0;q<scrmoves.length;q++)
+			if(scrmoves[q].length)
+				cs=mMa(scrmoves[q],cs)
+		tamperVertices()
+		animate(solmoves[aaa])
+		requestAnimationFrame(loop)
+	}
+	initGraphics()
 </script>
 <div>
 	<textarea id="scr" onclick="pScr(1)" onkeyup="pScr(1)" placeholder="SCRAMBLE" type="text" rows="1" cols="60"></textarea><br>
 	<table align="center"><tr><td><textarea id="sol" onclick="pScr(2)" onkeyup="pScr(2)" placeholder="SOLUTION" type="text" rows="8" cols="51"></textarea>
 			</td><td><textarea id="MC" readonly="readonly" onclick="pScr(2)" onkeyup="pScr(2)" type="text" rows="8" cols="7"></textarea>
 			</td></tr>
-			<tr><td></td>
+			<tr><td align="center"><button id="bu" onclick="animoves=0;ani(0)">PLAY</button>----------<button id="bu" onclick="a1=0;a2=0">RESET VIEW</button></td>
 			<td><textarea id="MC2" readonly="readonly" onclick="pScr(2)" onkeyup="pScr(2)" type="text" rows="1" cols="7"></textarea>
 			</td></tr></table>
 <textarea id="url" style="font-size:10px" onclick="this.focus();this.select()" readonly="readonly" rows="3" cols="120"> </textarea>
